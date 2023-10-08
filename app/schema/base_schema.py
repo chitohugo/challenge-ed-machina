@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
@@ -15,15 +15,6 @@ class FindBase(BaseModel):
     ordering: Optional[str]
     page: Optional[int]
     page_size: Optional[Union[int, str]]
-
-
-class SearchOptions(FindBase):
-    total_count: Optional[int]
-
-
-class FindResult(BaseModel):
-    founds: Optional[List]
-    search_options: Optional[SearchOptions]
 
 
 class Blank(BaseModel):
