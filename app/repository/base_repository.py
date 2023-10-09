@@ -26,7 +26,7 @@ class BaseRepository:
     def read_by_email(self, email: str):
         return self._read_by_field("email", email)
 
-    def read_leads(self):
+    def read(self):
         with self.session_factory() as session:
             query = session.query(self.model)
             query = query.all()
