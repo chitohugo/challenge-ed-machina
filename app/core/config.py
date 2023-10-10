@@ -41,7 +41,7 @@ class Configs(BaseSettings):
     DB_HOSTNAME: str = os.getenv("POSTGRES_HOSTNAME")
     DB_PORT: str = os.getenv("DATABASE_PORT", "5432")
     DB_NAME: str = os.getenv("POSTGRES_DB", "ed-machina")
-    DB_ENGINE: str = os.getenv("ENGINE", "postgresql+psycopg2")
+    DB_ENGINE: str = os.getenv("ENGINE", "postgresql")
 
     DATABASE_URI_FORMAT: str = "{db_engine}://{user}:{password}@{host}:{port}/{database}"
 

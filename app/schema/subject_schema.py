@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel
 
 from app.schema.base_schema import ModelBaseInfo
@@ -21,5 +19,5 @@ class UpsertSubject(BaseSubject):
     ...
 
 
-class FindSubjectResult(BaseModel):
-    subjects: List[Subject]
+class GetSubjectList(Subject):
+    ...

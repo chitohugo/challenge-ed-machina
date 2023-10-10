@@ -1,8 +1,9 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
 from app.schema.base_schema import FindBase, ModelBaseInfo
+from app.schema.career_schema import GetCareerList
 
 
 class BaseLead(BaseModel):
@@ -32,5 +33,16 @@ class UpsertLead(BaseLead):
     ...
 
 
-class FindLeadResult(BaseModel):
-    leads: List[Lead]
+class GetLeadList(Lead):
+    ...
+
+
+class UpsertLeapCareer(BaseModel):
+    lead_id: int
+    career_id: int
+    ...
+
+
+class LeadWithCareers(Lead):
+    careers: Optional[List[GetCareerList]]
+    ...

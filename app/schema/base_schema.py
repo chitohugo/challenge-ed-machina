@@ -1,12 +1,11 @@
 from datetime import datetime
 from typing import Optional, Union
-from uuid import UUID, uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class ModelBaseInfo(BaseModel):
-    id: UUID = Field(default_factory=uuid4)
+    id: int
     created_at: datetime
     updated_at: datetime
 

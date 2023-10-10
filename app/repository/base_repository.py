@@ -4,7 +4,7 @@ from typing import Callable
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import DuplicatedError, NotFoundError
+from app.core.exceptions import DuplicatedError, NotFoundError, RecordFound
 
 
 class BaseRepository:
@@ -34,6 +34,11 @@ class BaseRepository:
 
     def create(self, schema):
         with self.session_factory() as session:
+            query = session.query(self.model)
+            query = query.filter(self.model.name.ilike(schema.name)).first()
+            if query:
+                raise RecordFound(detail="Registration already exists")
+
             query = self.model(**schema.dict())
             try:
                 session.add(query)
