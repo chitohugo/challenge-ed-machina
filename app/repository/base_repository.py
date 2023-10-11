@@ -1,6 +1,7 @@
 from contextlib import AbstractContextManager
 from typing import Callable
 
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -29,8 +30,7 @@ class BaseRepository:
     def read(self):
         with self.session_factory() as session:
             query = session.query(self.model)
-            query = query.all()
-            return query
+            return paginate(session, query)
 
     def create(self, schema):
         with self.session_factory() as session:

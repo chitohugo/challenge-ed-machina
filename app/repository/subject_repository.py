@@ -1,6 +1,8 @@
 from contextlib import AbstractContextManager
+from fastapi_pagination.ext.sqlalchemy import paginate
 from typing import Callable
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.model.subject import Subject
@@ -14,9 +16,7 @@ class SubjectRepository(BaseRepository):
 
     def read(self):
         with self.session_factory() as session:
-            query = session.query(self.model)
-            query = query.options(
+            query = select(self.model).options(
                 joinedload("careers")
-            ).all()
-            print(query)
-            return query
+            )
+            return paginate(session, query)

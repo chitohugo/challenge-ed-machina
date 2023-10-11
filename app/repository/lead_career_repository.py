@@ -1,8 +1,9 @@
 from contextlib import AbstractContextManager
 from typing import Callable
 
-from sqlalchemy import and_
+from sqlalchemy import and_, select
 from sqlalchemy.orm import Session, joinedload
+from fastapi_pagination.ext.sqlalchemy import paginate
 
 from app.core.exceptions import RecordFound
 from app.model.lead_career import LeadCareer
@@ -18,11 +19,10 @@ class LeadCareerRepository(BaseRepository):
 
     def read(self):
         with self.session_factory() as session:
-            query = session.query(Lead)
-            query = query.options(
+            query = select(Lead).options(
                 joinedload(Lead.careers).joinedload("subjects")
-            ).all()
-            return query
+            )
+            return paginate(session, query)
 
     def read_by_career(self, lead_id, career_id):
         with self.session_factory() as session:

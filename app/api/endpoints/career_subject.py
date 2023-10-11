@@ -1,9 +1,8 @@
-from typing import List
-
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
 from starlette.responses import JSONResponse
 
+from app.core.config import configs
 from app.core.container import Container
 from app.core.dependencies import get_current_user
 from app.core.security import JWTBearer
@@ -17,8 +16,10 @@ router = APIRouter(
     dependencies=[Depends(JWTBearer())]
 )
 
+Page = configs.Page
 
-@router.get("", response_model=List[CareerWithSubjects], dependencies=[Depends(get_current_user)])
+
+@router.get("", response_model=Page[CareerWithSubjects], dependencies=[Depends(get_current_user)])
 @inject
 async def get_careers_subjects(
         service: CareerSubjectService = Depends(Provide[Container.career_subject_service])

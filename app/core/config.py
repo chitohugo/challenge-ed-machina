@@ -3,6 +3,8 @@ from typing import List
 
 from dotenv import load_dotenv
 from pydantic import BaseSettings
+from fastapi import Query
+from fastapi_pagination import Page
 
 load_dotenv()
 
@@ -47,10 +49,9 @@ class Configs(BaseSettings):
 
     DATABASE_URI = f"{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/{DB_NAME}"
 
-    # find query
-    PAGE = 1
-    PAGE_SIZE = 20
-    ORDERING = "-id"
+    Page = Page.with_custom_options(
+        size=Query(30, ge=1, le=50),
+    )
 
     class Config:
         case_sensitive = True

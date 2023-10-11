@@ -3,6 +3,7 @@ from typing import List
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
 
+from app.core.config import configs
 from app.core.container import Container
 from app.core.dependencies import get_current_user
 from app.core.security import JWTBearer
@@ -16,11 +17,13 @@ router = APIRouter(
     dependencies=[Depends(JWTBearer())]
 )
 
+Page = configs.Page
 
-@router.get("", response_model=List[GetSubjectList], dependencies=[Depends(get_current_user)])
+
+@router.get("", response_model=Page[GetSubjectList], dependencies=[Depends(get_current_user)])
 @inject
 async def get_subjects(
-    service: SubjectService = Depends(Provide[Container.subject_service])
+        service: SubjectService = Depends(Provide[Container.subject_service])
 ):
     subjects = service.get_list()
     return subjects
@@ -29,8 +32,8 @@ async def get_subjects(
 @router.get("/{subject_id}", response_model=Subject, dependencies=[Depends(get_current_user)])
 @inject
 async def get_subject(
-    subject_id: int,
-    service: SubjectService = Depends(Provide[Container.subject_service]),
+        subject_id: int,
+        service: SubjectService = Depends(Provide[Container.subject_service]),
 ):
     return service.get_by_id(subject_id)
 
@@ -38,8 +41,8 @@ async def get_subject(
 @router.post("", response_model=Subject, dependencies=[Depends(get_current_user)])
 @inject
 async def create_subject(
-    subject: UpsertSubject,
-    service: SubjectService = Depends(Provide[Container.subject_service])
+        subject: UpsertSubject,
+        service: SubjectService = Depends(Provide[Container.subject_service])
 ):
     return service.add(subject)
 
@@ -47,9 +50,9 @@ async def create_subject(
 @router.patch("/{subject_id}", response_model=Subject, dependencies=[Depends(get_current_user)])
 @inject
 async def update_subject(
-    subject_id: int,
-    subject: UpsertSubject,
-    service: SubjectService = Depends(Provide[Container.subject_service])
+        subject_id: int,
+        subject: UpsertSubject,
+        service: SubjectService = Depends(Provide[Container.subject_service])
 ):
     return service.patch(subject_id, subject)
 
@@ -57,7 +60,7 @@ async def update_subject(
 @router.delete("/{subject_id}", response_model=Blank, dependencies=[Depends(get_current_user)])
 @inject
 async def delete_subject(
-    subject_id: int,
-    service: SubjectService = Depends(Provide[Container.subject_service])
+        subject_id: int,
+        service: SubjectService = Depends(Provide[Container.subject_service])
 ):
     return service.remove_by_id(subject_id)

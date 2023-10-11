@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 
 from app.api.routes import routers as v1_routers
 from app.core.config import configs
@@ -38,6 +39,7 @@ class AppCreator:
             return "service is working"
 
         self.app.include_router(v1_routers, prefix=configs.API_V1_STR)
+        add_pagination(self.app)
 
     def __new__(cls):
         if cls._instance is None:
