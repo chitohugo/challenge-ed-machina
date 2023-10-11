@@ -2,13 +2,12 @@ from typing import List
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
-from starlette.responses import JSONResponse
 
 from app.core.container import Container
 from app.core.dependencies import get_current_user
 from app.core.security import JWTBearer
 from app.schema.base_schema import Blank
-from app.schema.career_schema import GetCareerList, Career, UpsertCareer, UpsertCareerSubject
+from app.schema.career_schema import GetCareerList, Career, UpsertCareer
 from app.services.career_service import CareerService
 
 router = APIRouter(
@@ -62,13 +61,3 @@ async def delete_career(
         service: CareerService = Depends(Provide[Container.career_service])
 ):
     return service.remove_by_id(career_id)
-
-
-@router.post("/career-subject", response_class=JSONResponse, dependencies=[Depends(get_current_user)])
-@inject
-async def create_career(
-        career_subject: UpsertCareerSubject,
-        service: CareerService = Depends(Provide[Container.career_service])
-):
-    service.add_with_subject(career_subject)
-    return {"message": "Successful registration"}

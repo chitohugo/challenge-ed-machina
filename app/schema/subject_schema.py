@@ -1,5 +1,8 @@
+from typing import Optional, List
+
 from pydantic import BaseModel
 
+from app.model.career import Career
 from app.schema.base_schema import ModelBaseInfo
 
 
@@ -20,4 +23,5 @@ class UpsertSubject(BaseSubject):
 
 
 class GetSubjectList(Subject):
+    careers: Optional[List[Career]]
     ...

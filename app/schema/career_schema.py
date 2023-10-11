@@ -25,9 +25,3 @@ class UpsertCareer(BaseCareer):
 class GetCareerList(Career):
     subjects: Optional[List[Subject]]
     ...
-
-
-class UpsertCareerSubject(BaseModel):
-    career_id: int
-    subject_id: int
-    ...
